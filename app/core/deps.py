@@ -26,12 +26,9 @@ class OAuth2PasswordBearerWithCookie(OAuth2PasswordBearer):
             return None
 
         return token
-
-
-
+    
 
 oauth2_scheme = OAuth2PasswordBearerWithCookie(tokenUrl="/api/v1/auth/token")
-
 
 
 async def get_current_user(
@@ -60,8 +57,6 @@ async def get_current_user(
 
         _ = user.roles
         return user
-
-
 
 
 async def get_current_active_user(

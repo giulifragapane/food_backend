@@ -38,5 +38,5 @@ pip install -r requirements.txt
 ## Ejecución del proyecto
 
 Una vez activado el entorno virtual e instaladas las dependencias, ejecutar la aplicación con:
-python -m fastapi dev app/main.py
+- python -m fastapi dev app/main.py
 
