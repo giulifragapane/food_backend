@@ -11,6 +11,7 @@ from app.modules.ingrediente.router import router as ingrediente_router
 from app.modules.producto.router import router as producto_router
 
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     create_db_and_tables()
