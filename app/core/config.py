@@ -10,6 +10,10 @@ class Settings(BaseSettings):
     postgres_db: str = Field(alias="POSTGRES_DB")
     postgres_host: str = Field(alias="POSTGRES_HOST")
     postgres_port: int = Field(alias="POSTGRES_PORT")
+    # ------ JWT ------
+    secret_key: str = Field(alias="SECRET_KEY")
+    algorithm: str = Field(alias="ALGORITHM")
+    access_token_expire_minutes: int = Field(alias="ACCESS_TOKEN_EXPIRE_MINUTES")
 
     @computed_field
     @property
