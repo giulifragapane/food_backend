@@ -1,39 +1,43 @@
-# app/modules/categoria/repository.py
-from sqlmodel import select, Session
-from sqlalchemy import func
-from app.core.repository import BaseRepository
-from app.modules.categoria.model import Categoria
+# app/modules/categoria/model.py
+from typing import Optional, TYPE_CHECKING, List
+from sqlmodel import Field, Relationship
+from sqlalchemy import BigInteger, Column, ForeignKey
 
-#Acá van todas las consultas específicas de la categoría, como obtener por parent_id, etc.
+from app.core.base import Base
 
-class CategoriaRepository(BaseRepository[Categoria]):
+# Contiene SOLO el modelo de tabla SQLModel de Categoría.
+# Los schemas Pydantic de entrada/salida viven en schemas.py.
 
-    def __init__(self, session: Session) -> None:
-        super().__init__(session, Categoria)
+if TYPE_CHECKING:
+    from app.modules.producto.model import ProductoCategoria
 
-    # Dame todas las subcategorías de una categoría padre
-    def get_by_parent_id(self, parent_id: int) -> list[Categoria]:
-        return self.session.exec(
-            select(Categoria).where(Categoria.parent_id == parent_id)
-        ).all()
+# Define la tabla SQLModel con table=True para que se cree en la base de datos
+class Categoria(Base, table=True):
+
+    __tablename__ = "categorias"
+
+    nombre: str = Field(max_length=100, unique=True, nullable=False) #nombre obligatorio, no puede ser nulo, debe ser único y su longitud máxima es de 100 caracteres
+    descripcion: str = Field(nullable=False) #descripción obligatoria, no puede ser nula, se espera que contenga información detallada sobre la categoría
+    imagen_url: str = Field(nullable=False) #url obligatoria, no puede ser nula
+    color: Optional[str] = Field(default=None, nullable=True)
     
-    #buscar categoría por nombre
-    def get_by_nombre(self, nombre: str) -> Categoria | None:
-        return self.session.exec(
-            select(Categoria).where(Categoria.nombre == nombre)
-    ).first()
+    parent_id: Optional[int] = Field(
+        default=None,
+        sa_column=Column(
+            BigInteger,
+            ForeignKey("categorias.id", ondelete="SET NULL"),
+            nullable=True
+        )
+    )
 
-    def count(self) -> int:
-        """
-        Cuenta la cantidad total de categorias activas.
+    # Relación recursiva para categorías padre-hijo
+    parent: Optional["Categoria"] = Relationship(
+        back_populates="children",
+        sa_relationship_kwargs={"remote_side": "Categoria.id"}
+    )
 
-        Returns:
-            int: Total de registros en la tabla Categoria.
-        return len(self.session.exec(select(Categoria)).all())
-        """
-        return self.session.exec(
-            select(func.count())
-            .select_from(Categoria)
-            .where(Categoria.deleted_at.is_(None))
-        ).one()
-  
+    children: List["Categoria"] = Relationship(
+        back_populates="parent"
+    )
+
+    productos: list["ProductoCategoria"] = Relationship(back_populates="categoria")
