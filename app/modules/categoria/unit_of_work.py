@@ -1,3 +1,4 @@
+# app/modules/categoria/unit_of_work.py
 from sqlmodel import Session
 from app.core.unit_of_work import UnitOfWork
 from app.modules.categoria.repository import CategoriaRepository

@@ -1,3 +1,4 @@
+# app/modules/producto/service.py
 # Lógica de negocio y operaciones CRUD para Producto con la base de datos
 from fastapi import HTTPException, status
 from sqlmodel import Session

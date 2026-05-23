@@ -14,9 +14,6 @@ if TYPE_CHECKING:
     from app.modules.categoria.model import Categoria
     from app.modules.ingrediente.model import Ingrediente
 
-# ──────────────────────────────────────────────
-# Tabla link N:N  Producto ↔ Categoría
-# ──────────────────────────────────────────────
 
 class ProductoCategoria(SQLModel, table=True):
     __tablename__ = "producto_categoria"
@@ -29,10 +26,6 @@ class ProductoCategoria(SQLModel, table=True):
     producto: Optional["Producto"] = Relationship(back_populates="categorias")
     categoria: Optional["Categoria"] = Relationship(back_populates="productos")
 
-
-# ──────────────────────────────────────────────
-# Tabla link N:N  Producto ↔ Ingrediente
-# ──────────────────────────────────────────────
 
 class ProductoIngrediente(SQLModel, table=True):
     __tablename__ = "producto_ingrediente"
