@@ -45,9 +45,6 @@ class ProductoService:
                 stock_cantidad=data.stock_cantidad,
                 disponible=data.disponible
             )
-            
-        # Persistimos
-            uow.productos.add(producto)
 
         # Procesamos categorías (tabla intermedia)
             # Validamos que no haya categorías repetidas en la misma solicitud
@@ -110,7 +107,8 @@ class ProductoService:
                 )
 
                 producto.ingredientes.append(producto_ingrediente)
-
+            #Persistimos
+            uow.productos.add(producto)
 
         # Serializamos
             result = ProductoRead.model_validate(producto)
