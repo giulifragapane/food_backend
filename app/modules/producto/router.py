@@ -44,7 +44,7 @@ def list_productos(
 def list_productos_all(
     offset: Annotated[int, Query(ge=0, description="Cantidad de registros a omitir")] = 0,
     limit: Annotated[int, Query(ge=1, le=100, description="Cantidad máxima de registros")] = 20,
-    _admin=Depends(require_role([RolCodigo.ADMIN])),
+    _admin=Depends(require_role([RolCodigo.ADMIN, RolCodigo.STOCK])),
     svc: ProductoService = Depends(get_producto_service),
 ) -> ProductoList:
     return svc.get_all(offset=offset, limit=limit)

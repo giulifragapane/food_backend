@@ -66,7 +66,7 @@ class UsuarioRepository(BaseRepository[Usuario]):
         self.session.flush()
 
     def update(self, usuario: Usuario) -> Usuario:
-        self.session.add(usuario)
+        # self.session.add(usuario)
         self.session.flush()
         self.session.refresh(usuario)
         return usuario

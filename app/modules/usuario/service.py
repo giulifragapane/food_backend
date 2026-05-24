@@ -161,6 +161,8 @@ class UsuarioService:
 
         self.uow.usuarios.clear_roles(user.id)
 
+        user.roles.clear()
+
         for rol_codigo in roles_unicos:
             user.roles.append(
                 UsuarioRol(
