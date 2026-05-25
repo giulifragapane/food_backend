@@ -1,13 +1,5 @@
 # PARCIAL 2 - BACKEND
 
----
-
-## Integrantes
-
-- Emiliano García
-- Pablo Barrios
-- Giuliana Fragapane
-
 ## Backend (FastAPI + SQLModel)
 
 Proyecto backend desarrollado con **FastAPI + SQLModel + PostgreSQL**, organizado por módulos y arquitectura por capas:
@@ -244,6 +236,7 @@ Activar entorno virtual e instalar dependencias:
 source .venv/bin/activate
 ```
 
+### Dependencias
 ```bash
 pip install -r requirements.txt
 ```
