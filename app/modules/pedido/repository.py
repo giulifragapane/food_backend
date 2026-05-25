@@ -4,8 +4,9 @@ from sqlalchemy import func
 from sqlalchemy.orm import selectinload
 
 from app.core.repository import BaseRepository
+from app.modules import pedido
 from app.modules.pedido.model import Pedido
-
+from app.modules.pedido.enums import EstadoPedido
 
 class PedidoRepository(BaseRepository[Pedido]):
     def __init__(self, session: Session) -> None:
@@ -67,3 +68,21 @@ class PedidoRepository(BaseRepository[Pedido]):
             .select_from(Pedido)
             .where(Pedido.deleted_at.is_(None))
         ).one()
+    
+    def exists_active_by_direccion(self, direccion_id: int) -> bool:
+        return (
+            self.session.exec(
+                select(Pedido)
+                .where(Pedido.direccion_entrega_id == direccion_id)
+                .where(Pedido.deleted_at.is_(None))
+                .where(
+                    Pedido.estado.notin_(
+                        [
+                            EstadoPedido.ENTREGADO,
+                            EstadoPedido.CANCELADO,
+                        ]
+                    )
+                )
+            ).first()
+            is not None
+        )

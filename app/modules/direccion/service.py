@@ -77,6 +77,15 @@ class DireccionService:
         with DireccionUnitOfWork(self._session) as uow:
             direccion = self._get_or_404(uow, direccion_id, usuario_id)
 
+            # Verificar si la dirección está siendo utilizada
+            if uow.pedidos.exists_active_by_direccion(direccion_id):
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail=(
+                        "No se puede eliminar la dirección porque está "
+                        "asociada a un pedido pendiente o en curso."
+                    ),
+                )
             era_principal = direccion.es_principal
 
             direccion.deleted_at = uow.now
